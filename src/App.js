@@ -20,7 +20,11 @@ function App() {
       ])
       setTarea('')
   }
- 
+ const eliminarTarea = (id) =>{
+   const tareasFiltradas = tareas.filter(item=> item.id !== id)
+
+  setTareas(tareasFiltradas)
+ }
 
 
   return (
@@ -35,7 +39,7 @@ function App() {
                 tareas.map(item =>(
                   <li key={item.id} className="list-group-item">
               <span className="lead">{item.nombreTarea}</span>
-              <button className="btn btn-danger btn-sm float-end mx-2">Eliminar</button>
+              <button className="btn btn-danger btn-sm float-end mx-2" onClick={()=> eliminarTarea(item.id)}>Eliminar</button>
               <button className="btn btn-warning btn-sm float-end">Editar</button>
             </li>
 
