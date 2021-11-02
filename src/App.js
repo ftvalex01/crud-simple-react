@@ -7,13 +7,15 @@ function App() {
   const [tareas,setTareas] = useState([])
   const [modoEdicion,setModoEdicion] = useState(false)
   const [id , setId] = useState('')
+  const [error,setError] = useState(null)
 
 
 
   const añadirTarea = (e) =>{
     e.preventDefault()
     if(!tarea.trim()){
-      console.log("elemento vacio")
+      console.log("Elemento vacio")
+      setError("Escriba la tarea")
      return
     }
       setTareas([
@@ -23,6 +25,7 @@ function App() {
         }
       ])
       setTarea('')
+      setError(null)
   }
  const eliminarTarea = (id) =>{
    const tareasFiltradas = tareas.filter(item=> item.id !== id)
@@ -39,6 +42,7 @@ const editarTarea = (e) =>{
   e.preventDefault()
   if(!tarea.trim()){
     console.log('Elemento vacio')
+    setError("Escriba la tarea")
     return
   }
   const arrayEditado = tareas.map(item => item.id === id ? {id,nombreTarea:tarea} : item)
@@ -47,6 +51,7 @@ const editarTarea = (e) =>{
   setModoEdicion(false)
   setTarea('')
   setId('')
+  setError(null)
 
 }
 
@@ -59,7 +64,8 @@ const editarTarea = (e) =>{
           <h4 className="text-center">Lista de tareas</h4>
           <ul className="list-group">
               {
-                tareas.map(item =>(
+                tareas.length === 0 ? (
+                  <li className="list-group-item">'No hay tareas'</li>) :   tareas.map(item =>(
                   <li key={item.id} className="list-group-item">
               <span className="lead">{item.nombreTarea}</span>
               <button className="btn btn-danger btn-sm float-end mx-2" onClick={()=> eliminarTarea(item.id)}>Eliminar</button>
@@ -67,6 +73,7 @@ const editarTarea = (e) =>{
             </li>
 
                 ))
+              
               }
 
 
@@ -80,6 +87,10 @@ const editarTarea = (e) =>{
         </h4>
 
         <form onSubmit={modoEdicion ? editarTarea : añadirTarea}>
+
+          {
+            error ? <span className="text-danger">{error}</span> : null
+          }
           <input 
           className="from-control mb-2" 
           type="text" 
